@@ -20,75 +20,106 @@ include('config.php');
 // Query untuk mendapatkan data mahasiswa yang perlu dikonfirmasi
 $query = "SELECT * FROM asrama";
 $result = mysqli_query($conn, $query);
+
+// Query untuk mengambil data dari tabel asramaConfirmed
+$query = "SELECT * FROM asramaConfirmed";
+$confirmedResult = mysqli_query($conn, $query);
 ?>
 
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Admin Page - Sistem Informasi Asrama</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css">
 </head>
+
 <body>
   <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <div class="container">
-      <a class="navbar-brand" href="#">Sistem Informasi Asrama</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="index.php">Homepage</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="?logout=true">Logout</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+  <?php include 'navbar.php'; ?>
 
   <div class="container mt-4">
     <h2>Admin Page</h2>
 
 
-  <div class="container mt-4">
-    <h2>Daftar Mahasiswa yang Menempati Asrama</h2>
-    <table class="table">
+    <div class="container mt-4">
+      <h2>Daftar Mahasiswa yang Mendaftar Asrama</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Mahasiswa ID</th>
+            <th scope="col">Nama Mahasiswa</th>
+            <th scope="col">NIM</th>
+            <th scope="col">Email</th>
+            <th scope="col">Jurusan</th>
+            <th scope="col">No. Telepon</th>
+            <th scope="col">Tanggal Masuk</th>
+            <th scope="col">Tanggal Keluar</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php while ($row = mysqli_fetch_assoc($result)) { ?>
+            <tr>
+              <th scope="row"><?php echo $row['mahasiswaId']; ?></th>
+              <td><?php echo $row['nameMahasiswa']; ?></td>
+              <td><?php echo $row['nim']; ?></td>
+              <td><?php echo $row['email']; ?></td>
+              <td><?php echo $row['jurusan']; ?></td>
+              <td><?php echo $row['noTelp']; ?></td>
+              <td><?php echo $row['tanggalMasuk']; ?></td>
+              <td><?php echo $row['tanggalKeluar']; ?></td>
+              <td>
+                <a href="konfirmasi.php?id=<?php echo $row['mahasiswaId']; ?>" class="btn btn-success">Konfirmasi</a>
+              </td>
+            </tr>
+          <?php } ?>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Daftar Mahasiswa yang Telah Menempati Asrama</h2>
+    <!-- Tabel Mahasiswa Terkonfirmasi -->
+    <table class="table table-bordered">
       <thead>
         <tr>
-          <th scope="col">Mahasiswa ID</th>
-          <th scope="col">Nama Mahasiswa</th>
-          <th scope="col">NIM</th>
-          <th scope="col">Jurusan</th>
-          <th scope="col">No. Telepon</th>
-          <th scope="col">Tanggal Masuk</th>
-          <th scope="col">Tanggal Keluar</th>
+          <th>No.</th>
+          <th>Nama Mahasiswa</th>
+          <th>NIM</th>
+          <th>Email</th>
+          <th>Jurusan</th>
+          <th>No. Telepon</th>
+          <th>Tanggal Masuk</th>
+          <th>Tanggal Keluar</th>
+          <th>Kamar</th>
         </tr>
       </thead>
       <tbody>
-        <?php while ($row = mysqli_fetch_assoc($result)) { ?>
+        <!-- Looping untuk menampilkan data mahasiswa terkonfirmasi -->
+        <?php $no = 1; ?>
+        <?php while ($row = mysqli_fetch_assoc($confirmedResult)) : ?>
           <tr>
-            <th scope="row"><?php echo $row['mahasiswaId']; ?></th>
-            <td><?php echo $row['nameMahasiswa']; ?></td>
-            <td><?php echo $row['nim']; ?></td>
-            <td><?php echo $row['jurusan']; ?></td>
-            <td><?php echo $row['noTelp']; ?></td>
-            <td><?php echo $row['tanggalMasuk']; ?></td>
-            <td><?php echo $row['tanggalKeluar']; ?></td>
+            <td><?php echo $no; ?></td>
+            <td><?php echo $row['conNamaMaha']; ?></td>
+            <td><?php echo $row['conNim']; ?></td>
+            <td><?php echo $row['conEmail']; ?></td>
+            <td><?php echo $row['conJurusan']; ?></td>
+            <td><?php echo $row['conNoTelp']; ?></td>
+            <td><?php echo $row['contglmasuk']; ?></td>
+            <td><?php echo $row['contglkeluar']; ?></td>
+            <td><?php echo $row['conKamar']; ?></td>
             <td>
-              <a href="delete.php?id=<?php echo $row['mahasiswaId']; ?>" class="btn btn-danger">Delete</a>
-              <a href="update.php?id=<?php echo $row['mahasiswaId']; ?>" class="btn btn-primary">Update</a>
+              <a href="delete.php?id=<?php echo $row['conMahaId']; ?>" class="btn btn-danger">Delete</a>
+              <a href="update.php?id=<?php echo $row['conMahaId']; ?>" class="btn btn-primary">Update</a>
             </td>
           </tr>
-        <?php } ?>
+          <?php $no++; ?>
+        <?php endwhile; ?>
       </tbody>
     </table>
-  </div>
 
-  <!-- Form Pengurangan dan Penambahan Jumlah Kamar -->
-  <div class="mt-4 col-sm-4">
+
+    <!-- Form Pengurangan dan Penambahan Jumlah Kamar -->
+    <div class="mt-4 col-sm-4">
       <h4>Pengurangan dan Penambahan Jumlah Kamar</h4>
 
       <?php
@@ -135,4 +166,5 @@ $result = mysqli_query($conn, $query);
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

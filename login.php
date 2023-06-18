@@ -32,9 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
   <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <a class="navbar-brand" href="index.php">Sistem Informasi Asrama</a>
-  </nav>
+  <?php include 'navbar.php';?>
 
   <div class="container mt-4">
     <h2>Login</h2>

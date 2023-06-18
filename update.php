@@ -14,7 +14,7 @@ if (isset($_GET['id'])) {
   $id = $_GET['id'];
 
   // Mengambil data mahasiswa berdasarkan id
-  $query = "SELECT * FROM asrama WHERE mahasiswaId = $id";
+  $query = "SELECT * FROM asramaConfirmed WHERE conMahaId = $id";
   $result = mysqli_query($conn, $query);
   $row = mysqli_fetch_assoc($result);
 
@@ -34,12 +34,16 @@ if (isset($_GET['id'])) {
 if (isset($_POST['update'])) {
   $namaMahasiswa = $_POST['namaMahasiswa'];
   $nim = $_POST['nim'];
+  $email = $_POST['email'];
   $jurusan = $_POST['jurusan'];
   $noTelp = $_POST['noTelp'];
   $tanggalMasuk = $_POST['tanggalMasuk'];
   $tanggalKeluar = $_POST['tanggalKeluar'];
+  $kamar = $_POST['kamar'];
 
-  $query = "UPDATE asrama SET nameMahasiswa = '$namaMahasiswa', nim = '$nim', jurusan = '$jurusan', noTelp = '$noTelp', tanggalMasuk = '$tanggalMasuk', tanggalKeluar = '$tanggalKeluar' WHERE mahasiswaId = $id";
+  $query = "UPDATE asramaConfirmed SET conNamaMaha = '$namaMahasiswa', conNim = '$nim', conEmail = '$email', 
+  conJurusan = '$jurusan', conNoTelp = '$noTelp', contglmasuk = '$tanggalMasuk', contglkeluar = '$tanggalKeluar', 
+  conKamar = '$kamar' WHERE conMahaId = $id";
   mysqli_query($conn, $query);
 
   // Redirect kembali ke halaman admin.php setelah berhasil update
@@ -56,51 +60,42 @@ if (isset($_POST['update'])) {
 </head>
 <body>
   <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <div class="container">
-      <a class="navbar-brand" href="#">Sistem Informasi Asrama</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="index.php">Homepage</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="?logout=true">Logout</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+  <?php include 'navbar.php';?>
 
   <div class="container mt-4">
     <h2>Update Data Mahasiswa</h2>
     <form method="POST">
       <div class="mb-3">
         <label for="namaMahasiswa" class="form-label">Nama Mahasiswa</label>
-        <input type="text" class="form-control" id="namaMahasiswa" name="namaMahasiswa" value="<?php echo $row['nameMahasiswa']; ?>">
+        <input type="text" class="form-control" id="namaMahasiswa" name="namaMahasiswa" value="<?php echo $row['conNamaMaha']; ?>">
       </div>
       <div class="mb-3">
         <label for="nim" class="form-label">NIM</label>
-        <input type="text" class="form-control" id="nim" name="nim" value="<?php echo $row['nim']; ?>">
+        <input type="text" class="form-control" id="nim" name="nim" value="<?php echo $row['conNim']; ?>">
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" class="form-control" id="email" name="email" value="<?php echo $row['conEmail']; ?>">
       </div>
       <div class="mb-3">
         <label for="jurusan" class="form-label">Jurusan</label>
-        <input type="text" class="form-control" id="jurusan" name="jurusan" value="<?php echo $row['jurusan']; ?>">
+        <input type="text" class="form-control" id="jurusan" name="jurusan" value="<?php echo $row['conJurusan']; ?>">
       </div>
       <div class="mb-3">
         <label for="noTelp" class="form-label">No. Telepon</label>
-        <input type="text" class="form-control" id="noTelp" name="noTelp" value="<?php echo $row['noTelp']; ?>">
+        <input type="text" class="form-control" id="noTelp" name="noTelp" value="<?php echo $row['conNoTelp']; ?>">
       </div>
       <div class="mb-3">
         <label for="tanggalMasuk" class="form-label">Tanggal Masuk</label>
-        <input type="date" class="form-control" id="tanggalMasuk" name="tanggalMasuk" value="<?php echo $row['tanggalMasuk']; ?>">
+        <input type="date" class="form-control" id="tanggalMasuk" name="tanggalMasuk" value="<?php echo $row['contglmasuk']; ?>">
       </div>
       <div class="mb-3">
         <label for="tanggalKeluar" class="form-label">Tanggal Keluar</label>
-        <input type="date" class="form-control" id="tanggalKeluar" name="tanggalKeluar" value="<?php echo $row['tanggalKeluar']; ?>">
+        <input type="date" class="form-control" id="tanggalKeluar" name="tanggalKeluar" value="<?php echo $row['contglkeluar']; ?>">
+      </div>
+      <div class="mb-3">
+        <label for="kamar" class="form-label">Kamar</label>
+        <input type="text" class="form-control" id="kamar" name="kamar" value="<?php echo $row['conKamar']; ?>">
       </div>
       <button type="submit" class="btn btn-primary" name="update">Update</button>
     </form>

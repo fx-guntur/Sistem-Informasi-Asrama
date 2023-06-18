@@ -16,21 +16,7 @@ $jumlahKamarTersedia = $row['jumlahKamar'];
 </head>
 <body>
   <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <div class="container">
-      <a class="navbar-brand" href="#">Sistem Informasi Asrama</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="login.php">Login</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+  <?php include 'navbar.php';?>
 
   <div class="container mt-4">
     <!-- Informasi Asrama -->
@@ -38,7 +24,6 @@ $jumlahKamarTersedia = $row['jumlahKamar'];
       <div class="col-md-6">
         <h2>Deskripsi Singkat Asrama</h2>
         <p>Deskripsi singkat tentang asrama.</p>
-        <p>Jumlah kamar tersedia: <?php echo $jumlahKamarTersedia; ?></p>
         <a class="btn btn-primary" href="pesankamar.php">Pesan Kamar</a>
       </div>
       <div class="col-md-6">
@@ -88,56 +73,54 @@ $jumlahKamarTersedia = $row['jumlahKamar'];
       $keyword = $_GET['keyword'] ?? '';
 
       // Query untuk mencari data mahasiswa berdasarkan keyword
-      $query = "SELECT * FROM asrama WHERE 
-                nameMahasiswa LIKE '%$keyword%' OR 
-                nim LIKE '%$keyword%' OR 
-                jurusan LIKE '%$keyword%'";
+      $query = "SELECT * FROM asramaConfirmed WHERE 
+                conNamaMaha LIKE '%$keyword%' OR 
+                conNim LIKE '%$keyword%' OR 
+                conJurusan LIKE '%$keyword%'";
       $result = mysqli_query($conn, $query);
 
       // Menampilkan hasil pencarian
       if (mysqli_num_rows($result) > 0) {
         ?>
         <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th>No.</th>
-              <th>Nama Mahasiswa</th>
-              <th>NIM</th>
-              <th>Jurusan</th>
-              <th>No. Telepon</th>
-              <th>Tanggal Masuk</th>
-              <th>Tanggal Keluar</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php
-            $counter = 1;
-            while ($row = mysqli_fetch_assoc($result)) {
-              ?>
-              <tr>
-                <td><?php echo $counter; ?></td>
-                <td><?php echo $row['nameMahasiswa']; ?></td>
-                <td><?php echo $row['nim']; ?></td>
-                <td><?php echo $row['jurusan']; ?></td>
-                <td><?php echo $row['noTelp']; ?></td>
-                <td><?php echo $row['tanggalMasuk']; ?></td>
-                <td><?php echo $row['tanggalKeluar']; ?></td>
-              </tr>
-              <?php
-              $counter++;
-            }
-            ?>
-          </tbody>
-        </table>
+      <thead>
+        <tr>
+          <th>No.</th>
+          <th>Nama Mahasiswa</th>
+          <th>NIM</th>
+          <th>Email</th>
+          <th>Jurusan</th>
+          <th>No. Telepon</th>
+          <th>Tanggal Masuk</th>
+          <th>Tanggal Keluar</th>
+          <th>Kamar</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Looping untuk menampilkan -->
+        <?php $no = 1; ?>
+        <?php while ($row = mysqli_fetch_assoc($result)) : ?>
+          <tr>
+            <td><?php echo $no; ?></td>
+            <td><?php echo $row['conNamaMaha']; ?></td>
+            <td><?php echo $row['conNim']; ?></td>
+            <td><?php echo $row['conEmail']; ?></td>
+            <td><?php echo $row['conJurusan']; ?></td>
+            <td><?php echo $row['conNoTelp']; ?></td>
+            <td><?php echo $row['contglmasuk']; ?></td>
+            <td><?php echo $row['contglkeluar']; ?></td>
+            <td><?php echo $row['conKamar']; ?></td>
+          </tr>
+          <?php $no++; ?>
+        <?php endwhile; ?>
+      </tbody>
+    </table>
         <?php
       } else {
         echo "Data tidak ditemukan.";
       }
       ?>
     </div>
-    
-    <!-- Tombol Pesan Kamar -->
-    <!-- ... -->
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"></script>
