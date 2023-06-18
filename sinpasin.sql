@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 11, 2023 at 11:20 AM
+-- Generation Time: Jun 18, 2023 at 07:07 PM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 8.0.2
 
@@ -30,20 +30,48 @@ SET time_zone = "+00:00";
 CREATE TABLE `asrama` (
   `mahasiswaId` int(11) NOT NULL,
   `nameMahasiswa` varchar(50) NOT NULL,
+  `email` varchar(255) DEFAULT NULL,
   `nim` varchar(20) NOT NULL,
   `jurusan` varchar(50) NOT NULL,
   `noTelp` varchar(20) NOT NULL,
   `tanggalMasuk` date DEFAULT NULL,
-  `tanggalKeluar` date DEFAULT NULL
+  `tanggalKeluar` date DEFAULT NULL,
+  `bukti_pembayaran` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `asrama`
 --
 
-INSERT INTO `asrama` (`mahasiswaId`, `nameMahasiswa`, `nim`, `jurusan`, `noTelp`, `tanggalMasuk`, `tanggalKeluar`) VALUES
-(8, 'Ibnu Khalis ', '2041720159', 'Teknik informatika', '082278497646', '2023-06-11', '2023-06-13'),
-(9, 'Yunika Putri Oktavia', '2041720238', 'Sistem Informasi', '083173302699', '2023-06-04', '2023-06-30');
+INSERT INTO `asrama` (`mahasiswaId`, `nameMahasiswa`, `email`, `nim`, `jurusan`, `noTelp`, `tanggalMasuk`, `tanggalKeluar`, `bukti_pembayaran`) VALUES
+(12, 'Sesar', 'sesar@gmail.com', '123456789', 'Sistem Informasi', '081233345567', '2023-06-01', '2023-06-22', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `asramaconfirmed`
+--
+
+CREATE TABLE `asramaconfirmed` (
+  `conMahaId` int(11) NOT NULL,
+  `conNamaMaha` varchar(255) NOT NULL,
+  `conNim` varchar(255) NOT NULL,
+  `conEmail` varchar(255) DEFAULT NULL,
+  `conJurusan` varchar(255) NOT NULL,
+  `conNoTelp` varchar(255) NOT NULL,
+  `contglmasuk` date NOT NULL,
+  `contglkeluar` date NOT NULL,
+  `conKamar` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `asramaconfirmed`
+--
+
+INSERT INTO `asramaconfirmed` (`conMahaId`, `conNamaMaha`, `conNim`, `conEmail`, `conJurusan`, `conNoTelp`, `contglmasuk`, `contglkeluar`, `conKamar`) VALUES
+(1, 'Ibnu Khalis ', '2041720159', 'ibnukhalisr@gmail.com', 'Teknik informatika', '082278497646', '2023-06-21', '2023-06-29', '405'),
+(2, 'Yunika Putri Oktavia', '2041720238', 'yunika@gmail.com', 'Sistem Informasi', '083173302699', '2023-06-04', '2023-06-30', '401'),
+(4, 'Yudha', '2041720100', 'yudah@gmail.com', 'Kelautan', '082278497646', '2023-06-24', '2023-06-29', '402');
 
 -- --------------------------------------------------------
 
@@ -92,6 +120,12 @@ ALTER TABLE `asrama`
   ADD PRIMARY KEY (`mahasiswaId`);
 
 --
+-- Indexes for table `asramaconfirmed`
+--
+ALTER TABLE `asramaconfirmed`
+  ADD PRIMARY KEY (`conMahaId`);
+
+--
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
@@ -105,7 +139,13 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `asrama`
 --
 ALTER TABLE `asrama`
-  MODIFY `mahasiswaId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `mahasiswaId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT for table `asramaconfirmed`
+--
+ALTER TABLE `asramaconfirmed`
+  MODIFY `conMahaId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `user`
