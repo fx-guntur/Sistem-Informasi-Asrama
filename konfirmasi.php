@@ -1,36 +1,33 @@
 <?php
+session_start();
 // Koneksi ke database
 include('config.php');
 
-// Fungsi untuk konfirmasi dan menghapus data
-if (isset($_GET['id'])) {
-  $mahasiswaID = $_GET['id'];
+$id_acc = $_SESSION['id'];
 
-  // Ambil data mahasiswa dari tabel asrama
-  $query = "SELECT * FROM asrama WHERE mahasiswaID = '$mahasiswaID'";
-  $result = mysqli_query($conn, $query);
-  $row = mysqli_fetch_assoc($result);
+// Ambil data mahasiswa dari tabel asrama
+$query = "SELECT * FROM request WHERE id_acc = '$id_acc'";
+$result = mysqli_query($conn, $query);
+$row = mysqli_fetch_assoc($result);
 
-  // Insert data ke tabel asramaConfirmed
-  $nama = $row['nameMahasiswa'];
-  $nim = $row['nim'];
-  $email = $row['email'];
-  $jurusan = $row['jurusan'];
-  $noTelp = $row['noTelp'];
-  $tanggalMasuk = $row['tanggalMasuk'];
-  $tanggalKeluar = $row['tanggalKeluar'];
-  $kamar = $row['kamar'];
+// Insert data ke tabel asramaConfirmed
+$id_acc = $row['id_acc'];
+$id_kamar = $row['id_kamar'];
+$tanggalMasuk = $row['tanggal_masuk'];
+$tanggalKeluar = $row['tanggal_keluar'];
+$bulan = $row['lama_bayar'];
+var_dump($bulan);
 
-  $queryInsert = "INSERT INTO asramaConfirmed (conNamaMaha, conNim, conEmail, conJurusan, conNoTelp, contglmasuk, contglkeluar, conKamar)
-                  VALUES ('$nama', '$nim', '$email', '$jurusan', '$noTelp', '$tanggalMasuk', '$tanggalKeluar', '$kamar')";
-  mysqli_query($conn, $queryInsert);
+$queryInsert = "INSERT INTO confirmed (id_acc, id_kamar, tanggal_masuk, tanggal_keluar, bulan_terbayar)
+                  VALUES ('$id_acc', '$id_kamar', '$tanggalMasuk', '$tanggalKeluar', '$bulan')";
+mysqli_query($conn, $queryInsert);
 
-  // Hapus data dari tabel asrama
-  $queryDelete = "DELETE FROM asrama WHERE mahasiswaID = '$mahasiswaID'";
-  mysqli_query($conn, $queryDelete);
+// Hapus data dari tabel asrama
+$queryDelete = "DELETE FROM request WHERE id_acc = '$id_acc'";
+mysqli_query($conn, $queryDelete);
 
-  // Redirect ke halaman admin setelah konfirmasi dan penghapusan berhasil
-  header('Location: admin.php');
-  exit();
-}
+// Redirect ke halaman admin setelah konfirmasi dan penghapusan berhasil
+header('Location: newAdmin.php?op=penghuni');
+exit();
+
 ?>
